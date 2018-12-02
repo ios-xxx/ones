@@ -1,0 +1,34 @@
+{
+  "name": "ones",
+  "version": "0.0.2",
+  "description": "A UI library for react native.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ios-xxx/one.git"
+  },
+  "keywords": [
+    "one",
+    "teaset",
+    "react",
+    "native",
+    "UI",
+    "library",
+    "framework"
+  ],
+  "author": "rilyu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rilyu/teaset/issues"
+  },
+  "homepage": "https://github.com/ios-xxx/one#readme",
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react-native-deprecated-custom-components": "github:facebookarchive/react-native-custom-components",
+    "teaset":"^0.5.10",
+    "react-native-spinkit":"^1.1.1"
+  }
+}
