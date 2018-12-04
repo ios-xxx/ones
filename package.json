@@ -1,15 +1,56 @@
 {
-  "name": "react-native-ones",
-  "version": "0.0.3",
+  "_args": [
+    [
+      "react-native-ones@0.0.31.1",
+      "/Users/hongchen/Desktop/React Native/YJWinStock"
+    ]
+  ],
+  "_from": "react-native-ones@0.0.31",
+  "_id": "react-native-ones@0.0.31",
+  "_inBundle": false,
+  "_integrity": "sha512-SLykM+xSkrEt6kPjnYfDTSG+ICqqycjFdyA/7hh1jLJi+/2Q+TluPU7PHei0rmx4CmZ6jVa5/BNManYmdSwwVA==",
+  "_location": "/react-native-ones",
+  "_phantomChildren": {
+    "fbjs": "0.8.17",
+    "immutable": "3.7.6",
+    "loose-envify": "1.4.0",
+    "object-assign": "4.1.1",
+    "prop-types": "15.6.2",
+    "react-timer-mixin": "0.13.4",
+    "rebound": "0.0.13"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "react-native-ones@0.0.31",
+    "name": "react-native-ones",
+    "escapedName": "react-native-ones",
+    "rawSpec": "0.0.31",
+    "saveSpec": null,
+    "fetchSpec": "0.0.31"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-ones/-/react-native-ones-0.0.31.tgz",
+  "_spec": "0.0.31",
+  "_where": "/Users/hongchen/Desktop/React Native/YJWinStock",
+  "author": {
+    "name": "CE.Mr"
+  },
+  "bugs": {
+    "url": "https://github.com/ios-xxx/ones/issues"
+  },
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react-native-deprecated-custom-components": "github:facebookarchive/react-native-custom-components",
+    "react-native-orientation": "^3.1.3",
+    "react-native-spinkit": "^1.1.1",
+    "react-native-storage": "^0.2.3",
+    "teaset": "^0.5.10"
+  },
   "description": "A UI library for react native.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ios-xxx/one.git"
-  },
+  "homepage": "https://github.com/ios-xxx/one#readme",
   "keywords": [
     "one",
     "teaset",
@@ -19,18 +60,15 @@
     "library",
     "framework"
   ],
-  "author": "rilyu",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ios-xxx/ones/issues"
+  "main": "index.js",
+  "name": "react-native-ones",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ios-xxx/one.git"
   },
-  "homepage": "https://github.com/ios-xxx/one#readme",
-  "dependencies": {
-    "prop-types": "^15.5.10",
-    "react-native-deprecated-custom-components": "github:facebookarchive/react-native-custom-components",
-    "teaset":"^0.5.10",
-    "react-native-spinkit":"^1.1.1" ,
-    "react-native-orientation": "^3.1.3",
-    "react-native-storage": "^0.2.3"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.31.1"
 }

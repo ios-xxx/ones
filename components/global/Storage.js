@@ -37,7 +37,9 @@ var local = {
      *
      * */
     set(key,data,expires,id){
-        let setValue = JSON.stringify(data)
+
+        let setValue = JSON.stringify(data);
+
         if(id){
             storage.save({
                 key:key,
@@ -60,16 +62,21 @@ var local = {
      * @params id  可为空
      *
      * */
-    async get(key,id){
+     get(key,id){
         
         if(id){
-            return await storage.load({
+            return storage.load({
                 key:key,
                 id:id
             }).then(ret =>{
-                
-                if(ret.ret == null) return null;
-                return JSON.parse(ret);
+
+                if(ret == null) return null;
+                if(ret == 'true') return true;
+                if(ret == 'false') return false;
+                var ret = JSON.parse(ret);
+
+                return ret;
+
             }).catch(err => {
                 /**
                  * 抛出错误
@@ -89,17 +96,23 @@ var local = {
                  }*/
             } )
         }else{
-            return await storage.load({
+            return storage.load({
                 key:key
             }).then(ret =>{
 
-                if(ret.ret == null) return null;
-                return JSON.parse(ret);
+                if(ret == null) return null;
+                if(ret == 'true') return true;
+                if(ret == 'false') return false;
+                var ret = JSON.parse(ret);
+
+                return ret;
+
             }).catch(err => {
                 /**
                  * 抛出错误
                  * 注释部分为抛出详细错误
                  * */
+                console.warn('出错了'+err);
                 return null;
 
                 // throw err;
