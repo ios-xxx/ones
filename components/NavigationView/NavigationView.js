@@ -1,20 +1,21 @@
 
 import React, {Component} from 'react';
 import {View, Modal, Alert, Keyboard} from 'react-native';
+import PropTypes from 'prop-types';
 import {KeyboardSpace, NavigationPage,Theme, Label, Button, Overlay,NavigationBar} from 'teaset';
 import LinearGradient from 'react-native-linear-gradient';
 import Adapter from "../utils/Adapter";
-
-// import NavigationPage from './NavigationPage';
-//import SelectBox from '../ListRows/SelectBox';
-
-//import LoadingIndicator from '../Overlay/LoadingIndicator';
-//import DatePicker from '../DatePicker/DatePicker';
+import Spinkit from 'react-native-spinkit';
  
 export default class NavigationView extends NavigationPage {
 
     static propTypes = {
         ...NavigationPage.propTypes,
+        showRequireAnimation:PropTypes.bool,
+        netState:PropTypes.oneOf(['start','complete','error']),
+        SpinkitType:PropTypes.oneOf(['CircleFlip', 'Bounce', 'Wave', 'WanderingCubes', 'Pulse', 'ChasingDots', 'ThreeBounce', 'Circle', '9CubeGrid', 'WordPress', 'FadingCircle', 'FadingCircleAlt', 'Arc', 'ArcAlt']),
+        SpinkitSize:PropTypes.number,
+        SpinkitColor:PropTypes.string,
     };
 
     static defaultProps = {
@@ -23,6 +24,11 @@ export default class NavigationView extends NavigationPage {
         navigationLinearGradient: true,//是否用渐变导航条  如果 用了。要和下面的两个互反  isNavBarShow:false,navigationBarInsets: false,
         isNavBarShow: false,//同上//如果 都不显示
         navigationBarInsets: false,//同上
+        showRequireAnimation:false,
+        netState:'start',
+        SpinkitType:'FadingCircleAlt',
+        SpinkitSize:102,
+        SpinkitColor:'#fff',
     };
 
     constructor(props) {
@@ -190,13 +196,30 @@ export default class NavigationView extends NavigationPage {
                                 {this.renderNavigationBar()}
                             </LinearGradient>
                             : null }
-                        {this.renderPage()}
+                        {this. requireStatus()}
                     </View>
                     {this.props.navigationLinearGradient ?null : this.renderNavigationBar() }
                 </View>
                 {autoKeyboardInsets ? <KeyboardSpace topInsets={keyboardTopInsets}/> : null}
             </View>
         );
+    }
+
+    /*网络状态*/
+    requireStatus(){
+
+        let {netState,showRequireAnimation,SpinkitType,SpinkitSize,SpinkitColor} = this.props;
+
+        if(!showRequireAnimation || netState == 'complete'){ return this.renderPage();};
+
+        if(netState == 'start') {
+
+            return(
+                <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                    <Spinkit  isVisible={true} size={SpinkitSize} type={SpinkitType} color={SpinkitColor}/>
+                </View>
+            )
+        }
     }
 
 
