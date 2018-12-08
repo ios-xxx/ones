@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import {View, Modal, Alert, Keyboard} from 'react-native';
+import {View, Modal, Alert, Keyboard,TouchableOpacity,Image} from 'react-native';
 import PropTypes from 'prop-types';
 import {KeyboardSpace, NavigationPage,Theme, Label, Button, Overlay,NavigationBar} from 'teaset';
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,43 +11,46 @@ export default class NavigationView extends NavigationPage {
 
     static propTypes = {
         ...NavigationPage.propTypes,
-        showRequireAnimation:PropTypes.bool,
-        netState:PropTypes.oneOf(['start','complete','error']),
-        SpinkitType:PropTypes.oneOf(['CircleFlip', 'Bounce', 'Wave', 'WanderingCubes', 'Pulse', 'ChasingDots', 'ThreeBounce', 'Circle', '9CubeGrid', 'WordPress', 'FadingCircle', 'FadingCircleAlt', 'Arc', 'ArcAlt']),
-        SpinkitSize:PropTypes.number,
-        SpinkitColor:PropTypes.string,
+        showRequireAnimation: PropTypes.bool,
+        SpinkitType: PropTypes.oneOf(['CircleFlip', 'Bounce', 'Wave', 'WanderingCubes', 'Pulse', 'ChasingDots', 'ThreeBounce', 'Circle', '9CubeGrid', 'WordPress', 'FadingCircle', 'FadingCircleAlt', 'Arc', 'ArcAlt']),
+        SpinkitSize: PropTypes.number,
+        SpinkitColor: PropTypes.string,
     };
 
     static defaultProps = {
         ...NavigationPage.defaultProps,
-        showBackButton:true,
+        showBackButton: true,
         navigationLinearGradient: true,//是否用渐变导航条  如果 用了。要和下面的两个互反  isNavBarShow:false,navigationBarInsets: false,
         isNavBarShow: false,//同上//如果 都不显示
         navigationBarInsets: false,//同上
-        showRequireAnimation:false,
-        netState:'start',
-        SpinkitType:'FadingCircleAlt',
-        SpinkitSize:102,
-        SpinkitColor:'#fff',
+        showRequireAnimation: false,
+        SpinkitType: 'WanderingCubes',
+        SpinkitSize: 58,
+        SpinkitColor: '#fff',
     };
 
     constructor(props) {
         super(props);
-	      if (props.route) props.route.page = this;
+        if (props.route) props.route.page = this;
+
+
         this.state = {
             isFocused: false,
             overlay: null,
+            showRequireAnimation: true,
+            netState: 'start',
         };
     }
+
 
     /**
      * 自定义导航bar
      */
     renderNavigationBar() {
         let {customBackground, hidden, animated, statusBarHidden} = this.state;
-        let {isNavBarShow,navigationLinearGradient} = this.props;
-        let NavigationBarStyle = navigationLinearGradient ? {backgroundColor: '#ffffff00'}:{};
-        if(!isNavBarShow && !navigationLinearGradient){
+        let {isNavBarShow, navigationLinearGradient} = this.props;
+        let NavigationBarStyle = navigationLinearGradient ? {backgroundColor: '#ffffff00'} : {};
+        if (!isNavBarShow && !navigationLinearGradient) {
             return null;
         }
         return (
@@ -62,8 +65,6 @@ export default class NavigationView extends NavigationPage {
             />
         );
     }
-
-
 
 
     // //多功能选择框
@@ -88,7 +89,7 @@ export default class NavigationView extends NavigationPage {
     //     return true;
     // }
 
-    dismissKeyboard(){
+    dismissKeyboard() {
         Keyboard.dismiss();
     }
 
@@ -154,7 +155,7 @@ export default class NavigationView extends NavigationPage {
         if (!buttons) buttons = [{text: '确认'}];
         Alert.alert(title ? `${title}` : null, `${message}`, buttons);
     }
-    
+
 
     // _showreport(transparent, modal,Elem,style) {
     //     let overlayView = (
@@ -184,9 +185,10 @@ export default class NavigationView extends NavigationPage {
 
 
     render() {
-        console.log('NavigationView');
+        // console.log('NavigationView');
 
         let {autoKeyboardInsets, keyboardTopInsets, pageContainerStyle, onLayout, ...others} = this.buildProps();
+
         return (
             <View {...others}>
                 <View style={{flex: 1}}>
@@ -195,10 +197,10 @@ export default class NavigationView extends NavigationPage {
                             <LinearGradient colors={['#197CE1', '#197CE1', '#1ABFFC']} style={styles.navStyle}>
                                 {this.renderNavigationBar()}
                             </LinearGradient>
-                            : null }
-                        {this. requireStatus()}
+                            : null}
+                        {this.requireStatus()}
                     </View>
-                    {this.props.navigationLinearGradient ?null : this.renderNavigationBar() }
+                    {this.props.navigationLinearGradient ? null : this.renderNavigationBar()}
                 </View>
                 {autoKeyboardInsets ? <KeyboardSpace topInsets={keyboardTopInsets}/> : null}
             </View>
@@ -208,11 +210,13 @@ export default class NavigationView extends NavigationPage {
     /*网络状态*/
     requireStatus(){
 
-        let {netState,showRequireAnimation,SpinkitType,SpinkitSize,SpinkitColor} = this.props;
+        let {showRequireAnimation,SpinkitType,SpinkitSize,SpinkitColor} = this.props;
+        let {netState} = this.state;
+        let  showAnimation = this.state.showRequireAnimation;
 
-        if(!showRequireAnimation || netState == 'complete'){ return this.renderPage();};
+        if(!showAnimation || netState == 'complete'){ return this.renderPage();};
 
-        if(netState == 'start') {
+        if(showRequireAnimation && showAnimation && netState == 'start') {
 
             return(
                 <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
@@ -220,10 +224,58 @@ export default class NavigationView extends NavigationPage {
                 </View>
             )
         }
+
+        if(showRequireAnimation && showAnimation && netState == 'error') {
+
+            return(
+                <View style={{flex:1,justifyContent:'center',alignItems:'center',}}>
+                    <TouchableOpacity
+                        onPress={()=>this.refreshBtnTap()}
+                        style={{justifyContent:'center',alignItems:'center',}}
+                    >
+                        <Image
+                            source={require('../../images/netError.png')}
+                            style={{width:130, height:130, marginBottom:10,
+                        }}/>
+                        <Label text={'网络请求出错，你可以刷新试试'} type={"detail"} size={"md"}/>
+                        <Button onPress={()=>this.refreshBtnTap()} title={'刷新'} type={"danger"} style={{marginTop:20,width:130}}/>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+
+
     }
 
 
+
+    closeLoadAnimation(){
+
+        this.setState({
+            showRequireAnimation:false,
+        })
+    }
+
+    requireLoadError(subMethod = null){
+
+        if(subMethod == null || typeof(subMethod) != 'function') return;
+
+        this.setState({subMethod:subMethod(),netState:'error'});
+    }
+
+
+    /*响应刷新按钮被单击*/
+    refreshBtnTap(){
+
+        this.setState({showRequireAnimation:true,netState:'start'});
+        this.state.subMethod();
+    }
+
+
+
 }
+
+
 
 const styles = {
 

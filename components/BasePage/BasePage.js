@@ -101,6 +101,8 @@ export default class BasePage extends Component {
         Alert.alert(title ? `${title}` : null, `${message}`, buttons);
     }
 
+
+
     buildProps() {
         let {style, ...others} = this.props;
         style = [{
@@ -126,6 +128,27 @@ export default class BasePage extends Component {
                 {/*<DatePicker ref={v => this.datePicker = v} />*/}
             </View>
         );
+    }
+
+    closeLoadAnimation(){
+
+        this.setState({
+            showRequireAnimation:false,
+        })
+    }
+
+    requireLoadError(subMethod = null){
+
+        if(subMethod == null || typeof(subMethod) != 'function') return;
+
+        this.setState({subMethod:subMethod,netState:'error'});
+    }
+
+
+    /*响应刷新按钮被单击*/
+    refreshBtnTap(){
+
+        this.state.subMethod;
     }
 
 
