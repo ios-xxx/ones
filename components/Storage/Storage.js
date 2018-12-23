@@ -56,66 +56,87 @@ var local = {
     },
     /**
      * 根据key 或者 key-id的到数据
-     * @params key 必传
+     * @params key 必传(支持字符串，和数组)
      * @params id  可为空
      *
      * */
     async get(key,id){
-        
-        if(id){
-            return await storage.load({
-                key:key,
-                id:id
-            }).then(ret =>{
-                
-                if(ret.ret == null) return null;
-                return JSON.parse(ret);
-            }).catch(err => {
-                /**
-                 * 抛出错误
-                 * 注释部分为抛出详细错误
-                 * */
-                return null;
-                // throw err;
-                /* switch (err.name) {
-                     case 'NotFoundError':
-                         throw err.message;
-                         break;
-                     case 'ExpiredError':
-                         throw err.message;
-                         break;
-                     default:throw '未知错误'
-                         break;
-                 }*/
-            } )
-        }else{
-            return await storage.load({
-                key:key
-            }).then(ret =>{
 
-                if(ret.ret == null) return null;
-                return JSON.parse(ret);
-            }).catch(err => {
-                /**
-                 * 抛出错误
-                 * 注释部分为抛出详细错误
-                 * */
-                return null;
 
-                // throw err;
-                /* switch (err.name) {
-                     case 'NotFoundError':
-                         throw err.message;
-                         break;
-                     case 'ExpiredError':
-                         throw err.message;
-                         break;
-                     default:throw '未知错误'
-                         break;
-                 }*/
-            })
+        if(typeof key == 'object'){
+
+            var rets = [];
+            for(var i = 0; i < key.length; i++) {
+
+                let k = key[i];
+                if(typeof k == 'string') id = false;
+                else id = true;
+
+
+
+                if(id){
+
+                    let ret = await storage.load({
+                        key:k.key,
+                        id:k.id,
+                    });
+
+                    if(ret == null) rets.push('');
+                    else rets.push(JSON.parse(ret));
+
+                }else{
+
+                    let ret = await storage.load({
+                        key:k,
+                    });
+
+                    if(ret == null) rets.push('');
+                    else rets.push(JSON.parse(ret));
+
+                }
+
+
+            }
+
+            return rets;
+
+
+        }else if(typeof key == 'string'){
+
+
+            if(id){
+
+                let ret = await storage.load({
+                    key:key,
+                    id:id
+                });
+
+                if(ret == null) return '';
+                return JSON.parse(ret);
+
+            }else{
+
+                try {
+
+                    let ret = await storage.load({
+                        key:key
+                    });
+
+                    if(ret == null) return '';
+
+                    return JSON.parse(ret);
+
+                }
+                catch (e) {
+                    return '';
+                }
+
+
+            }
 
         }
+
+
 
 
     },

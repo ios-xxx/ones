@@ -1,6 +1,8 @@
 
 import React, {Component} from 'react';
-import {View, Modal, Alert, Keyboard,TouchableOpacity,Image} from 'react-native';
+import {
+    View, Modal, Alert, Keyboard,TouchableOpacity,
+    Image,DeviceEventEmitter} from 'react-native';
 import PropTypes from 'prop-types';
 import {KeyboardSpace, NavigationPage,Theme, Label, Button, Overlay,NavigationBar} from 'teaset';
 import LinearGradient from 'react-native-linear-gradient';
@@ -53,7 +55,7 @@ export default class NavigationView extends NavigationPage {
         if (!isNavBarShow && !navigationLinearGradient) {
             return null;
         }
-        return (
+        return ( 
             <NavigationBar
                 title={this.renderNavigationTitle()}
                 hidden={hidden}
@@ -65,6 +67,19 @@ export default class NavigationView extends NavigationPage {
             />
         );
     }
+
+    renderNavigationLeftView() {
+        if (!this.props.showBackButton) return null;
+        return (
+            <NavigationBar.BackButton
+                title={Theme.backButton}
+                onPress={() => this.navigator.pop()}
+            />
+        );
+    }
+
+
+
 
 
     // //多功能选择框
@@ -214,7 +229,10 @@ export default class NavigationView extends NavigationPage {
         let {netState} = this.state;
         let  showAnimation = this.state.showRequireAnimation;
 
-        if(!showAnimation || netState == 'complete'){ return this.renderPage();};
+        if(!showAnimation || netState == 'complete' || !showRequireAnimation){
+            
+            return this.renderPage();
+        };
 
         if(showRequireAnimation && showAnimation && netState == 'start') {
 
@@ -256,22 +274,28 @@ export default class NavigationView extends NavigationPage {
         })
     }
 
-    requireLoadError(subMethod = null){
-
-        if(subMethod == null || typeof(subMethod) != 'function') return;
-
-        this.setState({subMethod:subMethod(),netState:'error'});
+    requireLoadError(){
+ 
+        this.setState({netState:'error'});
     }
 
 
     /*响应刷新按钮被单击*/
     refreshBtnTap(){
-
+ 
         this.setState({showRequireAnimation:true,netState:'start'});
-        this.state.subMethod();
+        DeviceEventEmitter.emit('netError','');
     }
 
-
+    /*
+    * 监听通知
+    * */
+    requireErrorNotifcation(notifcation =()=>{}){
+        DeviceEventEmitter.addListener('netError',()=>{
+            notifcation();
+            DeviceEventEmitter.removeCurrentListener();
+        });
+    }
 
 }
 

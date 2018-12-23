@@ -8,8 +8,11 @@ var Verification = {
      * 删除所有空格
      */
     deleteAllSpaces(deleteStr){
-        deleteStr = deleteStr.toString();
-        deleteStr = deleteStr.replace(/^\s\s*/, ' ').replace(/^\s\s*/, ' ');
+
+        if(typeof deleteStr == "undefined") return '';
+        if(typeof deleteStr !=  "string"){ deleteStr = deleteStr.toString();}
+        deleteStr = deleteStr.replace(/ /g, '');
+
         return deleteStr;
     },
 
@@ -18,10 +21,10 @@ var Verification = {
      * */
     isNull(str){
 
-        if(str == NULL || str == undefined) return false;
+        if(str == null || str == undefined || str == '') return true;
         if(typeof(str) == 'object') return false;
-        str = deleteAllSpaces(str);
-        if(str.length > 0) return true;
+        str = this.deleteAllSpaces(str);
+        if(str.length > 0) return false;
 
     },
 

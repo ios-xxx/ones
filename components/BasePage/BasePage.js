@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Platform, View, Modal, Alert} from 'react-native';
+import {Platform, View, Modal, Alert, DeviceEventEmitter} from 'react-native';
 import {Theme,TeaNavigator, KeyboardSpace} from 'teaset';
  
 export default class BasePage extends Component {
@@ -130,6 +130,9 @@ export default class BasePage extends Component {
         );
     }
 
+
+
+
     closeLoadAnimation(){
 
         this.setState({
@@ -137,18 +140,27 @@ export default class BasePage extends Component {
         })
     }
 
-    requireLoadError(subMethod = null){
+    requireLoadError(){
 
-        if(subMethod == null || typeof(subMethod) != 'function') return;
-
-        this.setState({subMethod:subMethod,netState:'error'});
+        this.setState({netState:'error'});
     }
 
 
     /*响应刷新按钮被单击*/
     refreshBtnTap(){
 
-        this.state.subMethod;
+        this.setState({showRequireAnimation:true,netState:'start'});
+        DeviceEventEmitter.emit('netError','');
+    }
+
+    /*
+    * 监听通知
+    * */
+    requireErrorNotifcation(notifcation =()=>{}){
+        DeviceEventEmitter.addListener('netError',()=>{
+            notifcation();
+            DeviceEventEmitter.removeCurrentListener();
+        });
     }
 
 
