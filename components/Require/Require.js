@@ -18,6 +18,35 @@ var Require = {
         }else {
             params = '';
         }
+
+
+        if(Verification.isNull(headers)) {
+
+            //fetch请求
+            fetch(url, {
+                method: 'GET',
+            })
+                .then((response) => response._bodyText)
+                .then((response)=>{
+
+                    if(Verification.isNull(JSON.parse(response))) {
+
+                        responses(response);
+                    }else {
+
+                        responses(JSON.parse(response));
+                    }
+
+                })
+                .catch((error) => {
+
+                    errors(error);
+                })
+
+            return;
+
+        }
+
         //fetch请求
         fetch(url, {
             method: 'GET',
@@ -42,7 +71,7 @@ var Require = {
     },
 
 
-      post(url,headers,params, responses = () => { }, errors = () => { },) {
+    post(url,headers,params, responses = () => { }, errors = () => { },) {
 
         if(Verification.isNull(headers)) {
 
@@ -54,12 +83,13 @@ var Require = {
 
 
 
-         fetch(url, {
-            method: 'POST',
-            headers: headers,
-            body: params,
-        })
-            .then((response) => response._bodyText)
+        if(Verification.isNull(headers)){
+
+            fetch(url, {
+                method: 'POST',
+                body: params,
+            })
+                .then((response) => response._bodyText)
                 .then((response)=>{
 
 
@@ -72,12 +102,41 @@ var Require = {
                     }
 
                 })
-             .catch((error) => {
+                .catch((error) => {
 
 
-                 errors(error);
+                    errors(error);
 
-             })
+                })
+            return;
+        }
+
+
+
+        fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: params,
+        })
+            .then((response) => response._bodyText)
+            .then((response)=>{
+
+
+                if(Verification.isNull(JSON.parse(response))) {
+
+                    responses(response);
+                }else {
+
+                    responses(JSON.parse(response));
+                }
+
+            })
+            .catch((error) => {
+
+
+                errors(error);
+
+            })
 
 
     },

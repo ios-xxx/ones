@@ -141,7 +141,7 @@ export default class BasePage extends Component {
     }
 
     requireLoadError(){
-
+        console.log('网络请求出错了');
         this.setState({netState:'error'});
     }
 

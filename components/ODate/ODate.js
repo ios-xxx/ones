@@ -87,6 +87,37 @@ var ODate = {
         return days;
     },
 
+
+    /**
+     * 获取当前日期
+     * */
+    getCurrentDate() {
+
+
+        var currentDay = new Date();
+        let currentMonth = currentDay.getMonth() + 1;
+        let currentYear = currentDay.getFullYear();
+        var currentDays = currentDay.getDate();
+
+        return currentYear+'.'+currentMonth+'.'+currentDays;
+
+    },
+
+    /**
+     * 获取今天是星期几
+     * */
+    getCurrentWeekday() {
+
+        var currentDay = new Date();
+        var currentDays = currentDay.getDay();
+
+
+        let weekday = ["日", "一", "二", "三", "四", "五", "六"];
+
+        return weekday[currentDays];
+
+    }
+
 }
 
 module.exports = ODate;
