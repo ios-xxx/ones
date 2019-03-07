@@ -90,15 +90,15 @@ var local = {
                         key:k,
                     });
 
-                    if(ret == null) rets.push('');
-                    else rets.push(JSON.parse(ret));
+                    if(await ret == null) rets.push('');
+                    else rets.push(JSON.parse(await ret));
 
                 }
 
 
             }
 
-            return rets;
+            return await rets;
 
 
         }else if(typeof key == 'string'){
@@ -111,8 +111,8 @@ var local = {
                     id:id
                 });
 
-                if(ret == null) return '';
-                return JSON.parse(ret);
+                if(await ret == null) return '';
+                return JSON.parse(await ret);
 
             }else{
 
@@ -122,9 +122,9 @@ var local = {
                         key:key
                     });
 
-                    if(ret == null) return '';
+                    if(await ret == null) return '';
 
-                    return JSON.parse(ret);
+                    return JSON.parse(await ret);
 
                 }
                 catch (e) {
@@ -140,6 +140,8 @@ var local = {
 
 
     },
+
+
     /**
      * 删除单个数据
      * key 必传
