@@ -5,6 +5,7 @@
 import React from 'react';
 import {NativeModules, Platform, PixelRatio,ActivityIndicator} from 'react-native';
 import {Toast as Toasts,Theme} from 'teaset'
+import Verification from './../Verification/Verification';
 
 
 
@@ -56,8 +57,12 @@ export default class Toast {
     Toasts.message(message, 'short', 'top');
   }
 
-  static showShortCenter(message) {
-    Toasts.message(message, 'short', 'center');
+  static showShortCenter(message,duration) {
+
+    if(Verification.isNull(duration)) duration = 1000;
+    if(typeof duration != 'number' && duration != 'short') duration = 1000;
+
+    Toasts.message(message, duration, 'center');
   }
 
   static showShortBottom(message) {
@@ -89,27 +94,27 @@ export default class Toast {
     setTimeout(() => this.show(message), delay);
   }
 
-    static customKey = null;
+  static customKey = null;
 
-  static showLoading(message,modal=true) {
+  static showLoading(message,modal=false) {
 
-      if (Toasts.customKey) return;
-       Toasts.customKey = Toasts.show({
-          text: message,
-          icon:  <ActivityIndicator size='large' color={Theme.toastIconTintColor} />,
-          position: 'center',
-          duration: 100000000,
-           modal:modal,
-      });
+    if (Toasts.customKey) return;
+    Toasts.customKey = Toasts.show({
+      text: message,
+      icon:  <ActivityIndicator size='large' color={Theme.toastIconTintColor} />,
+      position: 'center',
+      duration: 100000000,
+      modal:modal,
+    });
 
   }
 
 
   static hideToast() {
 
-      if (!Toasts.customKey) return;
-      Toasts.hide(Toasts.customKey);
-      Toasts.customKey = null;
+    if (!Toasts.customKey) return;
+    Toasts.hide(Toasts.customKey);
+    Toasts.customKey = null;
   }
 
 }
