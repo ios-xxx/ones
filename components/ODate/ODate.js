@@ -116,7 +116,32 @@ var ODate = {
 
         return weekday[currentDays];
 
+    },
+
+    /**
+     * 将时间戳转换为日期
+     * */
+    timeToDate(time){
+
+
+        var time = new Date(time);
+        var y = time.getFullYear();
+        var m = time.getMonth()+1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var s = time.getSeconds();
+        return y+'-'+this.add0(m)+'-'+this.add0(d)+' '+this.add0(h)+':'+this.add0(mm)+':'+this.add0(s);
+
+
+    },
+    /**
+     * 时间戳转换日期
+    * */
+    add0(m){
+        return m<10?'0'+m:m;
     }
+
 
 }
 

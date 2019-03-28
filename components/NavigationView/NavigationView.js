@@ -282,17 +282,15 @@ export default class NavigationView extends NavigationPage {
 
     /*响应刷新按钮被单击*/
     refreshBtnTap(){
-
+ 
         this.setState({showRequireAnimation:true,netState:'start'});
-         DeviceEventEmitter.emit('netError','');
+        DeviceEventEmitter.emit('netError','');
     }
 
     /*
     * 监听通知
     * */
     requireErrorNotifcation(notifcation =()=>{}){
-
-
         DeviceEventEmitter.addListener('netError',()=>{
             notifcation();
             DeviceEventEmitter.removeCurrentListener();
