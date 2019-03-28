@@ -26,7 +26,7 @@ var Require = {
             })
                 .then((response) => response._bodyText)
                 .then((response)=>{
-
+                    console.log(response)
                     return response;
 
                 })
@@ -37,19 +37,18 @@ var Require = {
 
             if(Verification.isNull(await result)) {
                 responses({msg:'获取数据失败'});
-                return '';
+                return ;
             }
 
+            try {
 
-             let json = eval(result);
-
-            if(Verification.isNull(json)) {
-
+                JSON.parse(result);
+                let json =  JSON.parse(result);
+                responses(json);
+            }catch (e) {
                 responses(result);
-                return;
             }
 
-            responses(json);
             return;
 
         }
@@ -77,62 +76,60 @@ var Require = {
         }
 
 
-        let json = eval(result);
+        try {
 
-        if(Verification.isNull(json)) {
-
+            JSON.parse(result);
+            let json =  JSON.parse(result);
+            responses(json);
+        }catch (e) {
             responses(result);
-            return;
         }
-
-        responses(json);
         return;
     },
 
 
-    post(url,headers,params, responses = () => { }, errors = () => { },) {
+    async post(url,headers,params, responses = () => { }, errors = () => { },) {
 
-        if(Verification.isNull(headers)) {
-
-            // headers = {
-            //     'Accept': 'application/json',
-            //     'Content-Type': 'application/json',
-            // };
-        }
 
 
 
         if(Verification.isNull(headers)){
 
-            fetch(url, {
+            let result = await fetch(url, {
                 method: 'POST',
                 body: params,
             })
                 .then((response) => response._bodyText)
                 .then((response)=>{
 
-
-                    if(Verification.isNull(JSON.parse(response))) {
-
-                        responses(response);
-                    }else {
-
-                        responses(JSON.parse(response));
-                    }
-
+                    return response;
                 })
                 .catch((error) => {
 
-
                     errors(error);
-
                 })
+
+
+            if(Verification.isNull(await result)) {
+                responses({msg:'获取数据失败'});
+                return ;
+            }
+
+            try {
+
+                JSON.parse(result);
+                let json =  JSON.parse(result);
+                responses(json);
+            }catch (e) {
+                responses(result);
+            }
+
             return;
         }
 
 
 
-        fetch(url, {
+        let result = await fetch(url, {
             method: 'POST',
             headers: headers,
             body: params,
@@ -140,14 +137,7 @@ var Require = {
             .then((response) => response._bodyText)
             .then((response)=>{
 
-
-                if(Verification.isNull(JSON.parse(response))) {
-
-                    responses(response);
-                }else {
-
-                    responses(JSON.parse(response));
-                }
+                return response;
 
             })
             .catch((error) => {
@@ -156,6 +146,23 @@ var Require = {
                 errors(error);
 
             })
+
+
+        if(Verification.isNull(await result)) {
+            responses({msg:'获取数据失败'});
+            return ;
+        }
+
+        try {
+
+            JSON.parse(result);
+            let json =  JSON.parse(result);
+            responses(json);
+        }catch (e) {
+            responses(result);
+        }
+
+        return;
 
 
     },
