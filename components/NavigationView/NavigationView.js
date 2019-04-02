@@ -19,6 +19,16 @@ export default class NavigationView extends NavigationPage {
         SpinkitColor: PropTypes.string,
     };
 
+  buildProps() {
+        let {style, ...others} = this.props;
+        style = [{
+            flex: 1,
+            height: 500,
+            backgroundColor: Theme.pageColor,
+        }].concat(style);
+        return ({style, ...others});
+    }
+
     static defaultProps = {
         ...NavigationPage.defaultProps,
         showBackButton: true,
