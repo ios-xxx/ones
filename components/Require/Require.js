@@ -24,7 +24,7 @@ var Require = {
             let result = await fetch(url, {
                 method: 'GET',
             })
-                .then((response) => response._bodyText)
+                 .then((response) => response._bodyText)
                 .then((response)=>{
                     console.log(response)
                     return response;
@@ -43,8 +43,8 @@ var Require = {
             try {
 
                 JSON.parse(result);
-                let json =  JSON.parse(result);
-                responses(json);
+               let json =  JSON.parse(result);
+               responses(json);
             }catch (e) {
                 responses(result);
             }

@@ -17,17 +17,8 @@ export default class NavigationView extends NavigationPage {
         SpinkitType: PropTypes.oneOf(['CircleFlip', 'Bounce', 'Wave', 'WanderingCubes', 'Pulse', 'ChasingDots', 'ThreeBounce', 'Circle', '9CubeGrid', 'WordPress', 'FadingCircle', 'FadingCircleAlt', 'Arc', 'ArcAlt']),
         SpinkitSize: PropTypes.number,
         SpinkitColor: PropTypes.string,
+        statusBarStyle: PropTypes.oneOf(['default', 'light-content','dark-content',]), //status bar style (iOS only
     };
-
-  buildProps() {
-        let {style, ...others} = this.props;
-        style = [{
-            flex: 1,
-            height: 500,
-            backgroundColor: Theme.pageColor,
-        }].concat(style);
-        return ({style, ...others});
-    }
 
     static defaultProps = {
         ...NavigationPage.defaultProps,
@@ -39,6 +30,7 @@ export default class NavigationView extends NavigationPage {
         SpinkitType: 'WanderingCubes',
         SpinkitSize: 58,
         SpinkitColor: '#fff',
+        statusBarStyle: 'dark-content',
     };
 
     constructor(props) {
@@ -65,13 +57,17 @@ export default class NavigationView extends NavigationPage {
         if (!isNavBarShow && !navigationLinearGradient) {
             return null;
         }
-        return ( 
+
+
+        return (
             <NavigationBar
                 title={this.renderNavigationTitle()}
                 hidden={hidden}
                 animated={animated}
                 statusBarHidden={statusBarHidden}
-                style={NavigationBarStyle}
+                // style={Theme.navStatusBarStyle == '' ? this.props.navStatusBarStyle : Theme.navStatusBarStyle}
+                style={this.props.navStatusBarStyle }
+                statusBarStyle={this.props.statusBarStyle}
                 leftView={this.renderNavigationLeftView()}
                 rightView={this.renderNavigationRightView()}
             />
