@@ -64,7 +64,7 @@ export default class Button extends Component{
                     <View style={[{alignItems: 'center',flexDirection:'row'}, style&&style]}>
                         <Image
                             source={icon}
-                            resizeMode={'cover'}
+                            resizeMode={'stretch'}
                             style={[{width:32,height:32},iconStyle&&iconStyle]}
                         />
                         <Label text={title} size={titleSize}  style={[{margin:5},titleStyle&&titleStyle]} />

@@ -1,8 +1,13 @@
 import Verification  from './../Verification/Verification';
+import {NetInfo} from 'react-native';
 var Require = {
 
     async get(url,headers = null, params = null, responses = () => { }, errors = () => { },) {
 
+        // 获取网络状态
+        NetInfo.fetch().then((reach) => {
+            if(reach == 'none' || reach == 'NONE') return responses({msg:'当前没有网络',code:0});
+        });
 
         if (Verification.isNull(params) == false) {
             let paramsArray = [];
@@ -24,7 +29,7 @@ var Require = {
             let result = await fetch(url, {
                 method: 'GET',
             })
-                 .then((response) => response._bodyText)
+                .then((response) => response._bodyText)
                 .then((response)=>{
                     console.log(response)
                     return response;
@@ -36,15 +41,15 @@ var Require = {
                 })
 
             if(Verification.isNull(await result)) {
-                responses({msg:'获取数据失败'});
+                responses({msg:'获取数据失败',code:0});
                 return ;
             }
 
             try {
 
                 JSON.parse(result);
-               let json =  JSON.parse(result);
-               responses(json);
+                let json =  JSON.parse(result);
+                responses(json);
             }catch (e) {
                 responses(result);
             }
@@ -71,7 +76,7 @@ var Require = {
             })
 
         if(Verification.isNull(await result)) {
-            responses({msg:'获取数据失败'});
+            responses({msg:'获取数据失败',code:0});
             return '';
         }
 
@@ -90,7 +95,10 @@ var Require = {
 
     async post(url,headers,params, responses = () => { }, errors = () => { },) {
 
-
+        // 获取网络状态
+        NetInfo.fetch().then((reach) => {
+            if(reach == 'none' || reach == 'NONE') return responses({msg:'当前没有网络',code:0});
+        });
 
 
         if(Verification.isNull(headers)){
@@ -111,7 +119,7 @@ var Require = {
 
 
             if(Verification.isNull(await result)) {
-                responses({msg:'获取数据失败'});
+                responses({msg:'获取数据失败',code:0});
                 return ;
             }
 
@@ -149,7 +157,7 @@ var Require = {
 
 
         if(Verification.isNull(await result)) {
-            responses({msg:'获取数据失败'});
+            responses({msg:'获取数据失败',code:0});
             return ;
         }
 

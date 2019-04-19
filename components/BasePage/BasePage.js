@@ -131,17 +131,28 @@ export default class BasePage extends Component {
     }
 
 
-
-
-    closeLoadAnimation(){
+    // 打开请求动画
+    openRequireAnimation(){
 
         this.setState({
+            netState:'start',
+            showRequireAnimation:true,
+        })
+    }
+
+    // 关闭请求动画
+    closeRequireAnimation(){
+
+        this.setState({
+            netState:'complete',
             showRequireAnimation:false,
         })
     }
 
+    /**
+     * 请求出错
+     * */
     requireLoadError(){
-
         this.setState({netState:'error'});
     }
 
@@ -154,7 +165,7 @@ export default class BasePage extends Component {
     }
 
     /*
-    * 监听通知
+    * 监听出错通知
     * */
     requireErrorNotifcation(notifcation =()=>{}){
         DeviceEventEmitter.addListener('netError',()=>{
@@ -162,6 +173,7 @@ export default class BasePage extends Component {
             DeviceEventEmitter.removeCurrentListener();
         });
     }
+
 
 
 }

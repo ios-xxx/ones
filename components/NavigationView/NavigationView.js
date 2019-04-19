@@ -27,10 +27,10 @@ export default class NavigationView extends NavigationPage {
         isNavBarShow: false,//同上//如果 都不显示
         navigationBarInsets: false,//同上
         showRequireAnimation: false,
-        SpinkitType: 'WanderingCubes',
+        SpinkitType: 'Circle',
         SpinkitSize: 58,
-        SpinkitColor: '#fff',
-        statusBarStyle: 'dark-content',
+        SpinkitColor: '#ff6514',
+        // statusBarStyle: 'dark-content',
     };
 
     constructor(props) {
@@ -65,8 +65,8 @@ export default class NavigationView extends NavigationPage {
                 hidden={hidden}
                 animated={animated}
                 statusBarHidden={statusBarHidden}
-                // style={Theme.navStatusBarStyle == '' ? this.props.navStatusBarStyle : Theme.navStatusBarStyle}
-                style={this.props.navStatusBarStyle }
+                style={Theme.navStatusBarStyle == '' ? this.props.navStatusBarStyle : Theme.navStatusBarStyle}
+                // style={this.props.navStatusBarStyle }
                 statusBarStyle={this.props.statusBarStyle}
                 leftView={this.renderNavigationLeftView()}
                 rightView={this.renderNavigationRightView()}
@@ -79,6 +79,7 @@ export default class NavigationView extends NavigationPage {
         return (
             <NavigationBar.BackButton
                 title={Theme.backButton}
+                icon={require('./image/icon/common_back_white.png')}
                 onPress={() => this.navigator.pop()}
             />
         );
@@ -210,6 +211,7 @@ export default class NavigationView extends NavigationPage {
 
         let {autoKeyboardInsets, keyboardTopInsets, pageContainerStyle, onLayout, ...others} = this.buildProps();
 
+
         return (
             <View {...others}>
                 <View style={{flex: 1}}>
@@ -233,14 +235,15 @@ export default class NavigationView extends NavigationPage {
 
         let {showRequireAnimation,SpinkitType,SpinkitSize,SpinkitColor} = this.props;
         let {netState} = this.state;
+
         let  showAnimation = this.state.showRequireAnimation;
 
-        if(!showAnimation || netState == 'complete' || !showRequireAnimation){
+        if(!showAnimation && netState == 'start' && !showRequireAnimation){
             
             return this.renderPage();
         };
 
-        if(showRequireAnimation && showAnimation && netState == 'start') {
+        if(showRequireAnimation && netState == 'start' || showAnimation && netState == 'start') {
 
             return(
                 <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
@@ -249,22 +252,24 @@ export default class NavigationView extends NavigationPage {
             )
         }
 
-        if(showRequireAnimation && showAnimation && netState == 'error') {
+
+
+        if(netState == 'error') {
 
             return(
-                <View style={{flex:1,justifyContent:'center',alignItems:'center',}}>
+                <SafeAreaView style={{flex:1,justifyContent:'center',alignItems:'center',}}>
                     <TouchableOpacity
                         onPress={()=>this.refreshBtnTap()}
                         style={{justifyContent:'center',alignItems:'center',}}
                     >
                         <Image
                             source={require('../../images/netError.png')}
-                            style={{width:130, height:130, marginBottom:10,
-                        }}/>
+                            style={{width:130, height:130, marginBottom:20,
+                            }}/>
                         <Label text={'网络请求出错，你可以刷新试试'} type={"detail"} size={"md"}/>
-                        <Button onPress={()=>this.refreshBtnTap()} title={'刷新'} type={"danger"} style={{marginTop:20,width:130}}/>
+                        <Button onPress={()=>this.refreshBtnTap()} title={'刷新'} type={"danger"} style={{marginTop:15,width:130}}/>
                     </TouchableOpacity>
-                </View>
+                </SafeAreaView>
             )
         }
 
@@ -272,16 +277,28 @@ export default class NavigationView extends NavigationPage {
     }
 
 
-
-    closeLoadAnimation(){
+    // 打开请求动画
+    openRequireAnimation(){
 
         this.setState({
+            netState:'start',
+            showRequireAnimation:true,
+        })
+    }
+
+    // 关闭请求动画
+    closeRequireAnimation(){
+
+        this.setState({
+            netState:'complete',
             showRequireAnimation:false,
         })
     }
 
+    /**
+     * 请求出错
+     * */
     requireLoadError(){
- 
         this.setState({netState:'error'});
     }
 
@@ -294,7 +311,7 @@ export default class NavigationView extends NavigationPage {
     }
 
     /*
-    * 监听通知
+    * 监听出错通知
     * */
     requireErrorNotifcation(notifcation =()=>{}){
         DeviceEventEmitter.addListener('netError',()=>{
